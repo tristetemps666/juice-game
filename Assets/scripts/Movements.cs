@@ -9,6 +9,10 @@ public class Movements : MonoBehaviour
 
     private Rigidbody2D rb2D;
     private PhysicsMaterial2D pm2D;
+    public const  float bounciness_after_shoot = 1.5f;
+    public float bounce_time;
+    private float time_to_bounce = 0f;
+
 
     private Shooting shooting_script;
     public float horizontal_speed;
@@ -31,8 +35,6 @@ public class Movements : MonoBehaviour
     public float delay_jump;
     private float can_jump;
 
-    public float rebound_factor_after_shoot;
-
     public GameObject jump_effect;
     private Transform position_to_spawn_jump_effect;
 
@@ -41,7 +43,9 @@ public class Movements : MonoBehaviour
     {
         shooting_script = GetComponentInChildren<Shooting>();
         rb2D = GetComponent<Rigidbody2D>();
-        pm2D = GetComponent<PhysicsMaterial2D>();
+        pm2D = rb2D.sharedMaterial;
+        pm2D.bounciness = 1f;
+        rb2D.sharedMaterial = pm2D;
 
         is_jump = true;
         can_jump = 0f;
@@ -54,9 +58,11 @@ public class Movements : MonoBehaviour
     // Update is called once per frame
 
     void Update(){
-        // pm2D.bounciness = shooting_script.GetHasShootAndNotCollide() ?
-        //     rebound_factor_after_shoot :
-        //     0f;
+        time_to_bounce = Mathf.Max(time_to_bounce-Time.deltaTime,0f);
+        set_player_bounciness(bounciness_after_shoot*(time_to_bounce/bounce_time));
+        if (time_to_bounce <= 0.001f &&rb2D.sharedMaterial.bounciness >=0f) set_player_bounciness(0f);
+
+        Debug.Log(rb2D.sharedMaterial.bounciness + " // ttb :"+ time_to_bounce );
 
         horizontal_input = Input.GetAxisRaw("Horizontal");
         vertical_input = Input.GetAxisRaw("Vertical");
@@ -98,6 +104,17 @@ public class Movements : MonoBehaviour
             rb2D.AddForce(air_factor*Xspeed,ForceMode2D.Impulse);
         }
 
+    }
+
+    public void set_player_bounciness(float bounce = bounciness_after_shoot){
+        time_to_bounce = bounce == 0f ? 0f : 
+                        time_to_bounce>0.001f ? time_to_bounce : bounce_time;
+
+        PhysicsMaterial2D pm = new PhysicsMaterial2D();
+        pm.bounciness = bounce;
+        pm.friction = 0f;
+
+        rb2D.sharedMaterial = pm;
     }
 
 
@@ -162,6 +179,7 @@ public class Movements : MonoBehaviour
         if (collision.gameObject.tag == "Plateform"){
             is_jump = true;
             rb2D.drag = air_drag;
+            set_player_bounciness(0f);
 
             //if(shooting_script.GetHasShootAndNotCollide()) shooting_script.SetHasShootAndNotCollide(false); REBOUND MAYBE
         }

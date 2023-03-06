@@ -93,6 +93,11 @@ public class Shooting : MonoBehaviour
             ApplyRecoil();
             // do the shoot
 
+            // enable bounce
+            GetComponentInParent<Movements>().set_player_bounciness();
+
+
+
             // Do the vfx
             shooting_vfx_script.start_vfx();
             shooting_vfx_script.Spawntrails();

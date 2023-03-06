@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfffe52426d1b06469d29ab731513b35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bounce_time: 1
   horizontal_speed: 200
   vertical_speed: 1500
   horizontal_speedGrowCurve:
@@ -261,7 +262,7 @@ MonoBehaviour:
   ground_drag: 8
   air_dash_factor: 0.2
   delay_jump: 0.15
-  rebound_factor_after_shoot: 0
+  rebound_factor_after_shoot: 10
   jump_effect: {fileID: 5343430893129238294, guid: 8c48404d0c97ef44698fb2586bc15d76, type: 3}
 --- !u!114 &7786920847027965566
 MonoBehaviour:
