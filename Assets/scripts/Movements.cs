@@ -58,19 +58,42 @@ public class Movements : MonoBehaviour
     // Update is called once per frame
 
     void Update(){
-        time_to_bounce = Mathf.Max(time_to_bounce-Time.deltaTime,0f);
-        set_player_bounciness(bounciness_after_shoot*(time_to_bounce/bounce_time));
-        if (time_to_bounce <= 0.001f &&rb2D.sharedMaterial.bounciness >=0f) set_player_bounciness(0f);
 
-        Debug.Log(rb2D.sharedMaterial.bounciness + " // ttb :"+ time_to_bounce );
+        if (GameManager.Instance.actual_game_state ==GameManager.GameState.game){
+            update_bounce();
 
-        horizontal_input = Input.GetAxisRaw("Horizontal");
-        vertical_input = Input.GetAxisRaw("Vertical");
+            horizontal_input = Input.GetAxisRaw("Horizontal");
+            vertical_input = Input.GetAxisRaw("Vertical");
+        }
 
     }
     void FixedUpdate()
     {
-        ////////////////  Vertical movement/////////////////////////
+        if (GameManager.Instance.actual_game_state ==GameManager.GameState.game){
+            vertical_movement();
+            set_gravity_along_jump();
+            horizontal_movement();
+        }
+
+    }
+
+    private void update_bounce(){
+        time_to_bounce = Mathf.Max(time_to_bounce-Time.deltaTime,0f);
+        set_player_bounciness(bounciness_after_shoot*(time_to_bounce/bounce_time));
+        if (time_to_bounce <= 0.001f &&rb2D.sharedMaterial.bounciness >=0f) set_player_bounciness(0f);
+    }
+
+// MOVEMENTS
+    private void set_gravity_along_jump(){
+        if (rb2D.velocity.y < -0.1f){
+            rb2D.gravityScale=fall_speed_factor;
+        }else{
+            rb2D.gravityScale = original_gravity;
+        }
+    }
+
+    private void vertical_movement(){
+            ////////////////  Vertical movement/////////////////////////
         if(is_jump) can_jump = Mathf.Max(can_jump-Time.deltaTime,0f);
         if(vertical_input>0.1f && can_jump>0f){
             is_jump = true;
@@ -79,18 +102,10 @@ public class Movements : MonoBehaviour
             rb2D.velocity*= new Vector2(1f,0.1f);
             Vector2 Yspeed = new Vector2(0.0f,vertical_input*vertical_speed*Time.deltaTime);
             rb2D.AddForce(Yspeed,ForceMode2D.Impulse);
-        }
+        }    
+    }
 
-        if (rb2D.velocity.y < -0.1f){
-            rb2D.gravityScale=fall_speed_factor;
-        }else{
-            rb2D.gravityScale = original_gravity;
-        }
-
-
-
-        ////////////////  horizontal movement/////////////////////////
-
+    private void horizontal_movement(){
         acceleration_factor = horizontal_speedGrowCurve.Evaluate(horizontal_acceleration_increase);
         if (Mathf.Abs(horizontal_input) < 0.1f) {
             horizontal_acceleration_increase  = Mathf.Max(horizontal_acceleration_increase-horizontal_acceleration_step,0.0f);
@@ -103,7 +118,6 @@ public class Movements : MonoBehaviour
             Vector2 Xspeed = new Vector2(acceleration_factor*horizontal_speed*horizontal_input*Time.deltaTime,0.0f);
             rb2D.AddForce(air_factor*Xspeed,ForceMode2D.Impulse);
         }
-
     }
 
     public void set_player_bounciness(float bounce = bounciness_after_shoot){
@@ -118,9 +132,20 @@ public class Movements : MonoBehaviour
     }
 
 
+
+
+
+
+
+
+
+
+
+
+// TRIGGERS COLLIDERS AND COLLISION
+
     void OnTriggerEnter2D(Collider2D collider){
         if (collider.gameObject.tag == "AmmoBox"){
-            Debug.Log("box");
             shooting_script.AddBullet(collider.gameObject.GetComponent<BoxAmmo>().amount_of_ammo);
             Destroy(collider.gameObject);
         }
@@ -159,13 +184,6 @@ public class Movements : MonoBehaviour
             
 
         }
-
-        // if (collision.gameObject.tag == "AmmoBox"){
-        //     Debug.Log("box");
-        //     shooting_script.AddBullet(collision.gameObject.GetComponent<BoxAmmo>().amount_of_ammo);
-        //     Destroy(collision.gameObject);
-        // }
-
 
         if (collision.gameObject.tag == "BoundBox"){
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5777628316745810323}
   - component: {fileID: -1577717623283484415}
   - component: {fileID: 5750559175413965730}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,9 +72,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 963149475
+  m_SortingLayer: 3
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
   m_FlipX: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d416517db7fe5fd45bc65589cb387f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 2264294912704898309, guid: c3137eaeccc6f644aa77b45d50e143b8, type: 3}
+  cam: {fileID: 0}
   fire_rate: 1.7
   dammage: 0
   magazine_size: 5
@@ -108,12 +108,12 @@ MonoBehaviour:
   recoil_strength: 2000
   recoil_lenght: 0.5
   recoil_recover_speed: 2
-  shooting_vfx_script: {fileID: 5750559175413965730}
+  shooting_vfx_script: {fileID: 0}
   muzzle_smoke: {fileID: 8029495617032616868, guid: bd8ba6736ff24bb4abeacbb56c5587d8, type: 3}
   reload_delay: 1
-  Canvas_UI: {fileID: 8346500644804485519, guid: 4e016f3dbe3835345b8c8e75e334878d, type: 3}
-  screen_shake_script: {fileID: 2264294912704898311, guid: c3137eaeccc6f644aa77b45d50e143b8, type: 3}
-  text: {fileID: 3171298828791282006, guid: dc1dd6f7dbce2314e86656603c0e5cb4, type: 3}
+  Canvas_UI: {fileID: 0}
+  screen_shake_script: {fileID: 0}
+  text: {fileID: 0}
 --- !u!114 &5750559175413965730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,25 +127,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunMat: {fileID: 2100000, guid: 75c75c000fcc21e49b052f8bde895ebf, type: 2}
-  activeTime: 1
-  meshRefreshRate: 0.1
-  player_trans: {fileID: 6752706447882030667, guid: 249f4c8b3f7ec8e44b4232b56081eda6, type: 3}
-  player_spr_rend: {fileID: 6752706447882030666, guid: 249f4c8b3f7ec8e44b4232b56081eda6, type: 3}
+  activeTime: 0.5
+  meshRefreshRate: 0.05
+  player_trans: {fileID: 0}
+  player_spr_rend: {fileID: 0}
   trail_gradient:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 0.54901963, g: 0.11764706, b: 1, a: 1}
+    key1: {r: 0.9490196, g: 0.13333334, b: 1, a: 0.13725491}
+    key2: {r: 1, g: 0.16078432, b: 0.45882353, a: 0}
+    key3: {r: 1, g: 0.5647059, b: 0.12156863, a: 0}
+    key4: {r: 1, g: 0.827451, b: 0.09803922, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
+    ctime1: 8481
+    ctime2: 34117
+    ctime3: 48959
+    ctime4: 65342
     ctime5: 0
     ctime6: 0
     ctime7: 0
@@ -158,7 +158,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 2
+    m_NumColorKeys: 5
     m_NumAlphaKeys: 2
   meshtimetodie: 0.2
-  count: 10
+  count: 15

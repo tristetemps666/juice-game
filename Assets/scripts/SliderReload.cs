@@ -18,14 +18,17 @@ public class SliderReload : MonoBehaviour
     void Start()
     {
         slider = GetComponentInChildren<Slider>();
+        Debug.Log(slider.gameObject.name);
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (reload_progress <=0.01f) slider.gameObject.SetActive(false);
 
         else{
+            Debug.Log(reload_progress);
             if(!slider.gameObject.activeSelf) slider.gameObject.SetActive(true);
             reload_progress-= Time.deltaTime;
             slider.value = reload_progress/reload_time;
@@ -36,7 +39,6 @@ public class SliderReload : MonoBehaviour
                 slider.colors = cb;
             }
             
-            Debug.Log(slider.colors.disabledColor);
         }
         
     }
@@ -44,6 +46,5 @@ public class SliderReload : MonoBehaviour
     public void start_reload_UI_anim(float delay){
         reload_progress = delay;
         reload_time = delay;
-        Debug.Log(reload_progress + "//" +reload_time);
     }
 }

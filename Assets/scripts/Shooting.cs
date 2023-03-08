@@ -59,20 +59,25 @@ public class Shooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Debug.Log(bullet_in_gun + " // "+ bullet_remaining);
-        UpdateRecoil();
+        if(GameManager.Instance.actual_game_state == GameManager.GameState.game){
+            
+            UpdateRecoil();
 
-        transform.parent.rotation = Quaternion.AngleAxis(GetSignedAngle(),Vector3.forward);
-        
-        DisplayAmmo();
+            transform.parent.rotation = Quaternion.AngleAxis(GetSignedAngle(),Vector3.forward);
+            
+            DisplayAmmo();
 
 
-        if (Input.GetMouseButtonDown(0)){
-            Shoot();
+            if (Input.GetMouseButtonDown(0)){
+                Shoot();
+            }
+
+            if (Input.GetKeyDown(KeyCode.R)){
+                Reload();
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.R)){
-            Reload();
+        else{
+            if(text.gameObject.activeInHierarchy) text.gameObject.SetActive(false);
         }
     }
 
@@ -132,7 +137,6 @@ public class Shooting : MonoBehaviour
     }
 
     void effectiveReload(){
-        Debug.Log("reload");
         int difference = magazine_size-bullet_in_gun; // what I need to add
 
         bullet_in_gun = difference >= bullet_remaining ? // do I have enough
@@ -165,15 +169,13 @@ public class Shooting : MonoBehaviour
     }
 
     void DisplayAmmo(){
+        if(!text.gameObject.activeInHierarchy) text.gameObject.SetActive(true);
+
         string value = bullet_in_gun.ToString() + " / " + bullet_remaining.ToString();
         if (bullet_in_gun <=2){
             value =  "<color=red>" + bullet_in_gun.ToString() + "</color>" + " / " + bullet_remaining.ToString();
         }
         text.SetText(value);
-    }
-
-    public void Addbullet(int n){
-        bullet_remaining+=n;
     }
 
 

@@ -64,7 +64,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 38.97156
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -162,9 +162,36 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  orthographicSize_when_still: 12
   speed_fallof_factor: 7
-  delay_size_cam_recover: 5
-  slowtime: 0
+  delay_size_cam_recover: 0.5
+  max_distance_to_player: 5
+  speed_to_rech_player: 0.07
+  delay_before_reach_player: 1
+  speed_animation:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &2264294912704898311
 MonoBehaviour:
   m_ObjectHideFlags: 0
