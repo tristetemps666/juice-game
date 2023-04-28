@@ -18,7 +18,6 @@ public class SliderReload : MonoBehaviour
     void Start()
     {
         slider = GetComponentInChildren<Slider>();
-        Debug.Log(slider.gameObject.name);
     }
 
     // Update is called once per frame
@@ -28,7 +27,6 @@ public class SliderReload : MonoBehaviour
         if (reload_progress <=0.01f) slider.gameObject.SetActive(false);
 
         else{
-            Debug.Log(reload_progress);
             if(!slider.gameObject.activeSelf) slider.gameObject.SetActive(true);
             reload_progress-= Time.deltaTime;
             slider.value = reload_progress/reload_time;

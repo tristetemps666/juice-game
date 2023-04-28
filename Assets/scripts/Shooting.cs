@@ -39,6 +39,11 @@ public class Shooting : MonoBehaviour
     private SliderReload slider_reload_script;
 
 
+    private float bullet_strength = 1f;
+    private int bullet_strength_level = 1; // the actual one used (int to allows more control like sova dart in valorant)
+    public float speed_loading_shoot = 1f;
+
+
     [SerializeField]  ScreenShake screen_shake_script;
     
     
@@ -60,6 +65,9 @@ public class Shooting : MonoBehaviour
     void Update()
     {
         if(GameManager.Instance.actual_game_state == GameManager.GameState.game){
+            bullet_strength_level = Mathf.FloorToInt(bullet_strength);
+            Debug.Log(bullet_strength + " // " + bullet_strength_level );
+
             
             UpdateRecoil();
 
@@ -68,8 +76,15 @@ public class Shooting : MonoBehaviour
             DisplayAmmo();
 
 
-            if (Input.GetMouseButtonDown(0)){
-                Shoot();
+            if (Input.GetMouseButton(0)){
+                //Shoot();
+                if( can_fire && !is_reloading) bullet_strength+= Time.deltaTime*speed_loading_shoot;
+
+            }
+
+            if(Input.GetMouseButtonUp(0)){
+                Shoot(bullet_strength_level);
+                bullet_strength = 1f;
             }
 
             if (Input.GetKeyDown(KeyCode.R)){
@@ -93,8 +108,9 @@ public class Shooting : MonoBehaviour
         return Vector2.SignedAngle(Vector2.right,GetDirection());
     }
 
-    void Shoot(){
-        if((bullet_in_gun>=1 ||infinit_ammo) && can_fire==true){
+    void Shoot(int strength_level){
+        
+        if((bullet_in_gun>=1 ||infinit_ammo) && can_fire==true && !is_reloading){
             ApplyRecoil();
             // do the shoot
 
@@ -115,7 +131,12 @@ public class Shooting : MonoBehaviour
             Instantiate(bullet,rb2D.position,Quaternion.AngleAxis(GetSignedAngle()-15f,Vector3.forward));
 
             rb2D.velocity *= 0.1f;
-            rb2D.AddForce(-GetDirection()*recoil_strength);
+
+            float strenght_factor = strength_level == 1 ? 1f:
+                                    strength_level == 2 ? 1.3f :
+                                                          1.6f;
+   
+            rb2D.AddForce(-GetDirection()*recoil_strength*strenght_factor);
             
             screen_shake_script.StartShake();
             
@@ -129,7 +150,6 @@ public class Shooting : MonoBehaviour
     void Reload(){
         if (bullet_in_gun == magazine_size || bullet_remaining ==0 || is_reloading) return; // the mag is full of we don't have more bullet, we can't reload
         else{
-                can_fire = false;
                 is_reloading = true;
                 slider_reload_script.start_reload_UI_anim(reload_delay);
                 Invoke("effectiveReload",reload_delay);
@@ -144,7 +164,6 @@ public class Shooting : MonoBehaviour
             magazine_size; // yes
 
         bullet_remaining = Mathf.Max(0,bullet_remaining-difference); // update the ammo remaining
-        can_fire = true;
         is_reloading = false;
     }
 
