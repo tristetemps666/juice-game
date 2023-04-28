@@ -113,6 +113,7 @@ MonoBehaviour:
   reload_delay: 1
   Canvas_UI: {fileID: 0}
   speed_loading_shoot: 2
+  UI_shoot_power_script: {fileID: 0}
   screen_shake_script: {fileID: 0}
   text: {fileID: 0}
 --- !u!114 &5750559175413965730

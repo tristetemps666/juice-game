@@ -44,6 +44,8 @@ public class Shooting : MonoBehaviour
     public float speed_loading_shoot = 1f;
 
 
+    public UI_shoot_power UI_shoot_power_script;
+
     [SerializeField]  ScreenShake screen_shake_script;
     
     
@@ -65,7 +67,12 @@ public class Shooting : MonoBehaviour
     void Update()
     {
         if(GameManager.Instance.actual_game_state == GameManager.GameState.game){
+            bullet_strength = Mathf.Clamp(bullet_strength,1f,3f);
             bullet_strength_level = Mathf.FloorToInt(bullet_strength);
+
+            if(UI_shoot_power_script == null) Debug.Log("cafdsfsdfsqdfsdfs");
+            UI_shoot_power_script.set_power_factor(bullet_strength-1f);
+
             Debug.Log(bullet_strength + " // " + bullet_strength_level );
 
             

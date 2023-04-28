@@ -39,7 +39,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _band_width: 0.22
-    - _border_width: 0.64
+    - _border_width: 0.82
     - _offset: 0.31
     - _speed: 1
     - _t: 0.1
