@@ -14,8 +14,8 @@ public class ScreenShake : MonoBehaviour
         
     }
 
-    public void StartShake(){
-        shake_amount = shake_strenght;
+    public void StartShake(float strenght_factor){
+        shake_amount = shake_strenght*strenght_factor;
     }
     // Update is called once per frame
     void Update()

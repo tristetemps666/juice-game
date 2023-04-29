@@ -9,6 +9,7 @@ TagManager:
   - BoundBox
   - AmmoBox
   - Checkpoint
+  - AmmoInstantBox
   layers:
   - Default
   - TransparentFX

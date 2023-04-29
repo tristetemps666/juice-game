@@ -13,6 +13,8 @@ public class Shooting : MonoBehaviour
     public int bullet_remaining;
     public bool infinit_ammo;
 
+    private bool is_shoot_not_delayed;
+
     private bool can_fire;
 
     public GameObject bullet;
@@ -58,7 +60,7 @@ public class Shooting : MonoBehaviour
 
         bullet_in_gun = magazine_size;
         local_origin_pos = transform.localPosition;
-        can_fire = true;
+        is_shoot_not_delayed = true;
         rb2D = gameObject.GetComponentInParent<Rigidbody2D>();
         slider_reload_script = Canvas_UI.GetComponent<SliderReload>();
     }
@@ -66,6 +68,9 @@ public class Shooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        can_fire = (bullet_in_gun>=1 || infinit_ammo) && is_shoot_not_delayed==true && !is_reloading;
+
+
         if(GameManager.Instance.actual_game_state == GameManager.GameState.game){
             bullet_strength = Mathf.Clamp(bullet_strength,1f,3f);
             bullet_strength_level = Mathf.FloorToInt(bullet_strength);
@@ -85,7 +90,7 @@ public class Shooting : MonoBehaviour
 
             if (Input.GetMouseButton(0)){
                 //Shoot();
-                if( can_fire && !is_reloading) bullet_strength+= Time.deltaTime*speed_loading_shoot;
+                if(can_fire) bullet_strength+= Time.deltaTime*speed_loading_shoot;
 
             }
 
@@ -117,7 +122,7 @@ public class Shooting : MonoBehaviour
 
     void Shoot(int strength_level){
         
-        if((bullet_in_gun>=1 ||infinit_ammo) && can_fire==true && !is_reloading){
+        if(can_fire){
             ApplyRecoil();
             // do the shoot
 
@@ -145,10 +150,10 @@ public class Shooting : MonoBehaviour
    
             rb2D.AddForce(-GetDirection()*recoil_strength*strenght_factor);
             
-            screen_shake_script.StartShake();
+            screen_shake_script.StartShake(strenght_factor);
             
             bullet_in_gun-=1;
-            can_fire =false;
+            is_shoot_not_delayed =false;
             StartCoroutine(ShootingDelay());
 
         }
@@ -194,12 +199,16 @@ public class Shooting : MonoBehaviour
         bullet_remaining+=n;
     }
 
+
+    public void FillCap(){
+        bullet_in_gun = magazine_size;
+    }
     void DisplayAmmo(){
         if(!text.gameObject.activeInHierarchy) text.gameObject.SetActive(true);
 
         string value = bullet_in_gun.ToString() + " / " + bullet_remaining.ToString();
         if (bullet_in_gun <=2){
-            value =  "<color=red>" + bullet_in_gun.ToString() + "</color>" + " / " + bullet_remaining.ToString();
+            value =  "<color=orange>" + bullet_in_gun.ToString() + "</color>" + " / " + bullet_remaining.ToString();
         }
         text.SetText(value);
     }
@@ -208,7 +217,7 @@ public class Shooting : MonoBehaviour
 
     IEnumerator ShootingDelay(){
         yield return new WaitForSeconds(1/fire_rate);
-        can_fire = true;
+        is_shoot_not_delayed = true;
         shooting_vfx_script.end_vfx();
     }
 }

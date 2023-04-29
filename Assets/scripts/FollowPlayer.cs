@@ -30,11 +30,12 @@ public class FollowPlayer : MonoBehaviour
 
     [Header("Start level animation")]
     public float speed_to_rech_player = 1f;
-    public float delay_before_reach_player = 1f;
+    public float delay_before_reach_player = 0.5f;
     private float reach_time = 0f;
 
     public AnimationCurve speed_animation;
 
+    private bool is_reaching_player_at_start;
 
     void Start(){
         target = target_rb2D.transform;
@@ -56,8 +57,11 @@ public class FollowPlayer : MonoBehaviour
         }
 
         else if(GameManager.Instance.actual_game_state == GameManager.GameState.startLevel){
-            Invoke("move_toward_player",delay_before_reach_player);
-            if(Vector3.Distance(transform.position, target.position) <= 0.01f) GameManager.Instance.actual_game_state = GameManager.GameState.game;
+            delay_before_reach_player = delay_before_reach_player == 0f ? 0f : Mathf.Max(0f,delay_before_reach_player-Time.deltaTime);
+            if(delay_before_reach_player == 0f){
+                move_toward_player();
+            }
+            if(Vector3.Distance(transform.position, target.position) <= 0.001f) GameManager.Instance.actual_game_state = GameManager.GameState.game;
         }
     }
 
@@ -77,11 +81,13 @@ public class FollowPlayer : MonoBehaviour
     }
 
     private void move_toward_player(){
+        Debug.Log("je vais vers lui");
         float avancement = speed_animation.Evaluate(reach_time);
         transform.position = Vector3.Lerp(transform.position, target.position,avancement); // step to the player
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, orthographicSize_when_still,avancement); // step to the size view
         reach_time+=Time.deltaTime*speed_to_rech_player;
     }
+
     private void clamp_distance_to_the_target(){
         Vector3 delta_pos = transform.position-target.position;
 

@@ -150,6 +150,11 @@ public class Movements : MonoBehaviour
             Destroy(collider.gameObject);
         }
 
+        if (collider.gameObject.tag == "AmmoInstantBox"){
+            shooting_script.FillCap();
+            Destroy(collider.gameObject);
+        }
+
         if (collider.gameObject.tag == "BoundBox"){
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
