@@ -128,6 +128,7 @@ public class Shooting : MonoBehaviour
 
             // enable bounce
             GetComponentInParent<Movements>().set_player_bounciness();
+            GetComponentInParent<Movements>().reset_time_to_bounce();
 
 
 

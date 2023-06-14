@@ -11,7 +11,9 @@ public class Movements : MonoBehaviour
     private PhysicsMaterial2D pm2D;
     public const  float bounciness_after_shoot = 1.5f;
     public float bounce_time;
-    private float time_to_bounce = 0f;
+    public float time_to_bounce = 0f;
+
+    private bool can_bounce = false;
 
 
     private Shooting shooting_script;
@@ -31,6 +33,8 @@ public class Movements : MonoBehaviour
     private bool is_jump;
     public float air_drag;
     public float ground_drag;
+
+    public float dash_gravity;
     public float air_dash_factor;
     public float delay_jump;
     private float can_jump;
@@ -59,16 +63,17 @@ public class Movements : MonoBehaviour
 
     void Update(){
 
+
+    }
+
+    void FixedUpdate()
+    {
         if (GameManager.Instance.actual_game_state ==GameManager.GameState.game){
             update_bounce();
 
             horizontal_input = Input.GetAxisRaw("Horizontal");
             vertical_input = Input.GetAxisRaw("Vertical");
         }
-
-    }
-    void FixedUpdate()
-    {
         if (GameManager.Instance.actual_game_state ==GameManager.GameState.game){
             vertical_movement();
             set_gravity_along_jump();
@@ -79,17 +84,15 @@ public class Movements : MonoBehaviour
 
     private void update_bounce(){
         time_to_bounce = Mathf.Max(time_to_bounce-Time.deltaTime,0f);
-        set_player_bounciness(bounciness_after_shoot*(time_to_bounce/bounce_time));
+        set_player_bounciness(bounciness_after_shoot*(Mathf.Max(time_to_bounce/bounce_time,0.5f)));
         if (time_to_bounce <= 0.001f &&rb2D.sharedMaterial.bounciness >=0f) set_player_bounciness(0f);
     }
 
 // MOVEMENTS
     private void set_gravity_along_jump(){
-        if (rb2D.velocity.y < -0.1f){
-            rb2D.gravityScale=fall_speed_factor;
-        }else{
-            rb2D.gravityScale = original_gravity;
-        }
+        rb2D.gravityScale = time_to_bounce > 0.7 *bounce_time ? dash_gravity:
+                            (rb2D.velocity.y < -0.1f) ? fall_speed_factor:
+                            original_gravity;
     }
 
     private void vertical_movement(){
@@ -121,14 +124,14 @@ public class Movements : MonoBehaviour
     }
 
     public void set_player_bounciness(float bounce = bounciness_after_shoot){
-        time_to_bounce = bounce == 0f ? 0f : 
-                        time_to_bounce>0.001f ? time_to_bounce : bounce_time;
-
         PhysicsMaterial2D pm = new PhysicsMaterial2D();
         pm.bounciness = bounce;
         pm.friction = 0f;
 
         rb2D.sharedMaterial = pm;
+    }
+    public void reset_time_to_bounce(){
+        time_to_bounce = bounce_time;
     }
 
 
