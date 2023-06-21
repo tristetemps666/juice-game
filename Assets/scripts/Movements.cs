@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public class Movements : MonoBehaviour
 
@@ -171,7 +172,7 @@ public class Movements : MonoBehaviour
     // is it from below ?
         
 
-        if (collision.gameObject.tag == "Plateform"){
+        if (collision.gameObject.tag == "Plateform" || collision.gameObject.tag == "PlateformAmmo"){
 
             is_jump = false;
             can_jump = delay_jump;
@@ -182,13 +183,25 @@ public class Movements : MonoBehaviour
 
 
             float strenght = Mathf.Clamp(collision.relativeVelocity.sqrMagnitude/100f,0.3f,15f);
+        
             ParticleSystem part = jump_effect.GetComponent<ParticleSystem>();
 
-            part.startColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
+
+    
+            part.startColor = color_from_collision(collision);
 
             part.emission.SetBurst(0,new ParticleSystem.Burst(0f,(int)(2f*strenght)));
 
             Instantiate(jump_effect,position_to_spawn_jump_effect.position,new Quaternion(0f,0f,0f,0f));
+
+            Debug.Log(collision.gameObject.tag);
+
+
+            if(collision.gameObject.tag == "PlateformAmmo"){
+                Debug.Log("RECHARCHE par rebond");
+                shooting_script.FillCap();
+
+            }
             
 
         }
@@ -202,7 +215,7 @@ public class Movements : MonoBehaviour
 
         void OnCollisionExit2D(Collision2D collision){
     // is it from below ?
-        if (collision.gameObject.tag == "Plateform"){
+        if (collision.gameObject.tag == "Plateform" || collision.gameObject.tag == "PlateformAmmo"){
             is_jump = true;
             rb2D.drag = air_drag;
             set_player_bounciness(0f);
@@ -211,5 +224,41 @@ public class Movements : MonoBehaviour
         }
 
     }
+
+
+    
+    Color color_from_collision(Collision2D collision){
+        Tilemap tilemap = collision.gameObject.GetComponent<Tilemap>();
+
+        
+        if(tilemap != null){ // je collide avec une collision
+                Debug.Log("atterit sur une tile map");
+                //return Color.black;
+
+                // get the tile hited
+                Vector3 hitPosition = collision.GetContact(0).point;
+                Vector3Int cellPosition = tilemap.WorldToCell(hitPosition);
+                TileBase tile  = tilemap.GetTile(cellPosition);
+                // return tilemap.GetColor(cellPosition);
+
+
+                Sprite sprite = tilemap.GetSprite(cellPosition);
+                if(sprite == null) return Color.black;
+                Vector3 spritePosition = hitPosition - tilemap.CellToWorld(cellPosition);
+                Vector2 textureCoord = new Vector2(spritePosition.x / sprite.rect.width, spritePosition.y / sprite.rect.height);
+
+                return  sprite.texture.GetPixelBilinear(textureCoord.x, textureCoord.y);
+
+
+                
+            }
+
+        else{
+            SpriteRenderer Sprite_render_collision = collision.gameObject.GetComponent<SpriteRenderer>();  
+            return Color.blue; 
+        }
+
+    }
+
 
 }

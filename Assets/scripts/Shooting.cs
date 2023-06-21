@@ -78,8 +78,6 @@ public class Shooting : MonoBehaviour
             if(UI_shoot_power_script == null) Debug.Log("cafdsfsdfsqdfsdfs");
             UI_shoot_power_script.set_power_factor(bullet_strength-1f);
 
-            Debug.Log(bullet_strength + " // " + bullet_strength_level );
-
             
             UpdateRecoil();
 

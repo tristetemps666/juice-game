@@ -81,7 +81,6 @@ public class FollowPlayer : MonoBehaviour
     }
 
     private void move_toward_player(){
-        Debug.Log("je vais vers lui");
         float avancement = speed_animation.Evaluate(reach_time);
         transform.position = Vector3.Lerp(transform.position, target.position,avancement); // step to the player
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, orthographicSize_when_still,avancement); // step to the size view

@@ -112,7 +112,7 @@ MonoBehaviour:
   muzzle_smoke: {fileID: 8029495617032616868, guid: bd8ba6736ff24bb4abeacbb56c5587d8, type: 3}
   reload_delay: 1
   Canvas_UI: {fileID: 0}
-  speed_loading_shoot: 2
+  speed_loading_shoot: 1
   UI_shoot_power_script: {fileID: 0}
   screen_shake_script: {fileID: 0}
   text: {fileID: 0}
