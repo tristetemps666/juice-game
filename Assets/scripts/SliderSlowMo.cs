@@ -23,7 +23,7 @@ public class SliderSlowMo : MonoBehaviour
     void Update()
     {
         
-        slider.value = stamina/max_stamina;
+        // slider.value = Mathf.Clamp01(stamina/max_stamina);
         ColorBlock cb = slider.colors;
         cb.disabledColor = can_use_slow_motion ? enabled_color : disable_color;
         slider.colors = cb;
