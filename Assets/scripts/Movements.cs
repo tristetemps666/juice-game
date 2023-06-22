@@ -194,11 +194,9 @@ public class Movements : MonoBehaviour
 
             Instantiate(jump_effect,position_to_spawn_jump_effect.position,new Quaternion(0f,0f,0f,0f));
 
-            Debug.Log(collision.gameObject.tag);
 
 
             if(collision.gameObject.tag == "PlateformAmmo"){
-                Debug.Log("RECHARCHE par rebond");
                 shooting_script.FillCap();
 
             }
@@ -232,8 +230,6 @@ public class Movements : MonoBehaviour
 
         
         if(tilemap != null){ // je collide avec une collision
-                Debug.Log("atterit sur une tile map");
-                //return Color.black;
 
                 // get the tile hited
                 Vector3 hitPosition = collision.GetContact(0).point;
