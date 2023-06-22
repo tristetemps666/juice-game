@@ -23,18 +23,19 @@ public class SlowMotionHandler{
     public float speed_to_recover_stamina = 0.5f;
 
 
-    public void update(){
-        if (stamina_slow_motion == 0){
-            is_in_slow_motion = false;
-            can_use_slow_motion = false;
-        }
-        
+    public void update(){        
         if(is_in_slow_motion){
             actual_time_scale = Mathf.Max(actual_time_scale-Time.deltaTime*speed_slow_mo,slow_mo_time_scale);
             stamina_slow_motion = math.max(stamina_slow_motion-Time.deltaTime/actual_time_scale,0f); // is not affected by time scale
         }
         else{
             actual_time_scale = Mathf.Min(actual_time_scale+Time.deltaTime*speed_slow_mo,1f);
+            stamina_slow_motion=math.min(stamina_slow_motion+Time.deltaTime*speed_to_recover_stamina,max_duration_slow_motion);
+        }
+
+        if (stamina_slow_motion == 0){
+            is_in_slow_motion = false;
+            can_use_slow_motion = false;
         }
 
         if(can_use_slow_motion == false){
@@ -56,6 +57,8 @@ public class GameManager : MonoBehaviour
     public Volume volume;
     private LensDistortion lensDistortion;
     private ChromaticAberration chromaticAberration;
+
+    public Canvas canvas;
 
     public enum GameState {
         pause,
@@ -101,10 +104,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        actual_game_state = GameState.startLevel;
+
+
+        slow_motion.stamina_slow_motion = slow_motion.max_duration_slow_motion;
         Time.timeScale = slow_motion.slow_mo_time_scale;
-           actual_game_state = GameState.startLevel;
-
-
 
         LensDistortion LDtmp;
         if(volume.profile.TryGet<LensDistortion>( out LDtmp ) )
@@ -137,6 +141,11 @@ public class GameManager : MonoBehaviour
             lensDistortion.intensity.value = 0.5f*intensity;
             chromaticAberration.intensity.value = intensity;
         }
+
+        SliderSlowMo sliderSlowMo = canvas.GetComponentInChildren<SliderSlowMo>();
+        sliderSlowMo.can_use_slow_motion = slow_motion.can_use_slow_motion;
+        sliderSlowMo.stamina = slow_motion.stamina_slow_motion;
+        sliderSlowMo.max_stamina = slow_motion.max_duration_slow_motion;
     }
 
 

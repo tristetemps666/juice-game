@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class SliderReload : MonoBehaviour
 {
-    private Slider slider;
+    public Slider slider;
 
     private float reload_progress = 0f;
     private float reload_time = 1f;
@@ -17,7 +17,6 @@ public class SliderReload : MonoBehaviour
 
     void Start()
     {
-        slider = GetComponentInChildren<Slider>();
     }
 
     // Update is called once per frame
