@@ -5,6 +5,7 @@ using TMPro;
 
 public class Shooting : MonoBehaviour
 {
+    public bool boost_vers_le_bas;
     public Camera cam;
     public float fire_rate;
     public float dammage;
@@ -141,7 +142,15 @@ public class Shooting : MonoBehaviour
             Instantiate(bullet,rb2D.position,Quaternion.AngleAxis(GetSignedAngle()+15f,Vector3.forward));
             Instantiate(bullet,rb2D.position,Quaternion.AngleAxis(GetSignedAngle()-15f,Vector3.forward));
 
-            rb2D.velocity *= 0.1f;
+            Vector3 mouse_world_pos = cam.ScreenToWorldPoint(Input.mousePosition);
+            if(Vector3.Dot(new Vector3(rb2D.velocity.x,rb2D.velocity.y,0f),mouse_world_pos-transform.position) >0)
+                rb2D.velocity *= 0.1f;
+            // else if(boost_vers_le_bas && Vector3.Angle(Vector3.up,mouse_world_pos-transform.position) <45){
+            //     rb2D.drag = 1f;
+            // }
+            Debug.Log(Vector3.Angle(Vector3.up,mouse_world_pos-transform.position));
+            
+            
 
             float strenght_factor = strength_level == 1 ? 1f:
                                     strength_level == 2 ? 1.3f :

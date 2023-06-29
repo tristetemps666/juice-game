@@ -8,6 +8,7 @@ public class Movements : MonoBehaviour
 
 {
 
+    public float max_speed;
     private Rigidbody2D rb2D;
     private PhysicsMaterial2D pm2D;
     public const  float bounciness_after_shoot = 1.5f;
@@ -43,6 +44,11 @@ public class Movements : MonoBehaviour
     public GameObject jump_effect;
     private Transform position_to_spawn_jump_effect;
 
+
+    public float water_gravity = -10f;
+    public float water_height_point_enter = 0f;
+    public bool enter_water = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -76,9 +82,12 @@ public class Movements : MonoBehaviour
             vertical_input = Input.GetAxisRaw("Vertical");
         }
         if (GameManager.Instance.actual_game_state ==GameManager.GameState.game){
-            vertical_movement();
             set_gravity_along_jump();
+            set_drag_along_jump();
+            handle_water_interraction();
+            vertical_movement();
             horizontal_movement();
+            rb2D.velocity = Vector2.ClampMagnitude(rb2D.velocity, max_speed);
         }
 
     }
@@ -95,6 +104,14 @@ public class Movements : MonoBehaviour
                             (rb2D.velocity.y < -0.1f) ? fall_speed_factor:
                             original_gravity;
     }
+
+
+    private void set_drag_along_jump(){
+        rb2D.drag = time_to_bounce > 0.7*bounce_time ? rb2D.drag:
+                            is_jump ? air_drag :
+                                      ground_drag;
+    }
+
 
     private void vertical_movement(){
             ////////////////  Vertical movement/////////////////////////
@@ -223,7 +240,35 @@ public class Movements : MonoBehaviour
 
     }
 
+    public bool is_in_water(){
+        int layer_water = 11; // CAN Change, check in unity Water layer
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position,0f);
+        Debug.Log(colliders.Length);
+        if(colliders.Length >0){
+            foreach(Collider2D collider2D in colliders){
+                Debug.Log(collider2D.tag + "\n");
+                if(collider2D.tag == "Water") return true;
+            }
+        }
+        return false;
+    }
 
+    public void handle_water_interraction(){
+        if(is_in_water()){
+            if(!enter_water) {
+                water_height_point_enter = transform.position.y;
+                enter_water = true;
+            }
+            float factor = Mathf.Abs(transform.position.y-water_height_point_enter);
+            factor = (rb2D.velocity.y<0) ? factor*=0.7f : factor*= 0.7f;
+            rb2D.gravityScale = water_gravity*(factor);
+            // rb2D.AddForce(factor*factor*10*Vector2.up,ForceMode2D.Force);
+            Debug.Log("water_height_point_enter : "  + water_height_point_enter + "factor : "  + factor + "\n\n" + "enter water :  " + enter_water + "\n\n");
+        }else{
+            enter_water = false;
+            set_gravity_along_jump(); // reset as in normal
+        }
+    }
     
     Color color_from_collision(Collision2D collision){
         Tilemap tilemap = collision.gameObject.GetComponent<Tilemap>();

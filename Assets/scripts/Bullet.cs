@@ -16,7 +16,6 @@ public class Bullet : MonoBehaviour
     {
         lifeTime = 5.0f;
         rb2D = GetComponent<Rigidbody2D>();
-        //rb2D.AddForce(direction*bullet_speed);
         rb2D.AddForce(transform.right*bullet_speed);
 
     }

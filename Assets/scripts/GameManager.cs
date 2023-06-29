@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = slow_motion.actual_time_scale;
 
-        Debug.Log(" // peut utiliser slowmo ? : " + slow_motion.can_use_slow_motion + " // est en slow mo ? : " + slow_motion.is_in_slow_motion + " // time scale : " + slow_motion.actual_time_scale + " // stamina : " +  slow_motion.stamina_slow_motion);
+        // Debug.Log(" // peut utiliser slowmo ? : " + slow_motion.can_use_slow_motion + " // est en slow mo ? : " + slow_motion.is_in_slow_motion + " // time scale : " + slow_motion.actual_time_scale + " // stamina : " +  slow_motion.stamina_slow_motion);
         if(Input.GetMouseButtonDown(1)){
             slow_motion.is_in_slow_motion = (!slow_motion.is_in_slow_motion) && slow_motion.can_use_slow_motion;
         }

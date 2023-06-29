@@ -11,6 +11,7 @@ TagManager:
   - Checkpoint
   - AmmoInstantBox
   - PlateformAmmo
+  - Water
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - BoundBox
   - Gun
   - Dash
-  - 
+  - Water
   - 
   - 
   - 
