@@ -260,8 +260,8 @@ public class Movements : MonoBehaviour
                 enter_water = true;
             }
             float factor = Mathf.Abs(transform.position.y-water_height_point_enter);
-            factor = (rb2D.velocity.y<0) ? factor*=0.7f : factor*= 0.7f;
-            rb2D.gravityScale = water_gravity*(factor);
+            factor = (rb2D.velocity.y<0) ? factor*=0.3f : factor*= 0.4f;
+            rb2D.gravityScale = water_gravity*(factor*factor);
             // rb2D.AddForce(factor*factor*10*Vector2.up,ForceMode2D.Force);
             Debug.Log("water_height_point_enter : "  + water_height_point_enter + "factor : "  + factor + "\n\n" + "enter water :  " + enter_water + "\n\n");
         }else{
