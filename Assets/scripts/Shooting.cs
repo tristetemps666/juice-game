@@ -208,8 +208,10 @@ public class Shooting : MonoBehaviour
     }
 
 
-    public void FillCap(){
+    public bool FillCap(){
+        if(bullet_in_gun == magazine_size) return false;
         bullet_in_gun = magazine_size;
+        return true;
     }
     void DisplayAmmo(){
         if(!text.gameObject.activeInHierarchy) text.gameObject.SetActive(true);

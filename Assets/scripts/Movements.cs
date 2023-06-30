@@ -172,8 +172,8 @@ public class Movements : MonoBehaviour
         }
 
         if (collider.gameObject.tag == "AmmoInstantBox"){
-            shooting_script.FillCap();
-            Destroy(collider.gameObject);
+            if(shooting_script.FillCap())
+                Destroy(collider.gameObject);
         }
 
         if (collider.gameObject.tag == "BoundBox"){
@@ -240,9 +240,9 @@ public class Movements : MonoBehaviour
 
     }
 
-    public bool is_in_water(){
+    public bool is_in_water(Vector3 position){
         int layer_water = 11; // CAN Change, check in unity Water layer
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position,0f);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(position,0f);
         Debug.Log(colliders.Length);
         if(colliders.Length >0){
             foreach(Collider2D collider2D in colliders){
@@ -254,13 +254,18 @@ public class Movements : MonoBehaviour
     }
 
     public void handle_water_interraction(){
-        if(is_in_water()){
+        if(is_in_water(transform.position)){
             if(!enter_water) {
-                water_height_point_enter = transform.position.y;
+                Vector3 top_water = transform.position;
+                while(is_in_water(top_water)){
+                    top_water+=Vector3.up*0.5f;
+                }
+                water_height_point_enter = top_water.y;
                 enter_water = true;
             }
             float factor = Mathf.Abs(transform.position.y-water_height_point_enter);
             factor = (rb2D.velocity.y<0) ? factor*=0.3f : factor*= 0.4f;
+            factor = Mathf.Clamp(factor,0f,3f);
             rb2D.gravityScale = water_gravity*(factor*factor);
             // rb2D.AddForce(factor*factor*10*Vector2.up,ForceMode2D.Force);
             Debug.Log("water_height_point_enter : "  + water_height_point_enter + "factor : "  + factor + "\n\n" + "enter water :  " + enter_water + "\n\n");
