@@ -148,7 +148,7 @@ public class Shooting : MonoBehaviour
             // else if(boost_vers_le_bas && Vector3.Angle(Vector3.up,mouse_world_pos-transform.position) <45){
             //     rb2D.drag = 1f;
             // }
-            Debug.Log(Vector3.Angle(Vector3.up,mouse_world_pos-transform.position));
+            // Debug.Log(Vector3.Angle(Vector3.up,mouse_world_pos-transform.position));
             
             
 

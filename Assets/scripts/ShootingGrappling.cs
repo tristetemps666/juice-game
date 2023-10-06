@@ -18,6 +18,7 @@ public enum GrapplingStates {
 public class ShootingGrappling : MonoBehaviour
 {
     public Camera cam;
+    private GameObject go_player;
     public float fire_rate;
 
     public float length = 50;
@@ -68,6 +69,7 @@ public class ShootingGrappling : MonoBehaviour
         local_origin_pos = transform.localPosition;
         is_shoot_not_delayed = true;
         rb2D = gameObject.GetComponentInParent<Rigidbody2D>();
+        go_player = gameObject.GetComponentInParent<Movements>().gameObject;
     }
 
     // Update is called once per frame
@@ -96,7 +98,15 @@ public class ShootingGrappling : MonoBehaviour
 
                     if(throwing_avancement >= 0.99){
                         throwing_avancement = 1f;
-                        if(will_be_hooked) grapplingStates = GrapplingStates.is_hooked;
+                        if(will_be_hooked) {
+                            grapplingStates = GrapplingStates.is_hooked;
+                            DistanceJoint2D joint2D = go_player.GetComponent<DistanceJoint2D>();
+                            if(joint2D == null)
+                            joint2D = go_player.AddComponent<DistanceJoint2D>();
+                            else joint2D.enabled = true;
+                            joint2D.connectedAnchor= endPosition;
+                            joint2D.distance = Vector2.Distance(endPosition,go_player.transform.position);
+                        }
                         else grapplingStates = GrapplingStates.is_retrieving;
                     }
                     break;
@@ -105,12 +115,13 @@ public class ShootingGrappling : MonoBehaviour
                     updateGrapplingPositions();
                     if(Input.GetMouseButtonDown(1)){
                         grapplingStates = GrapplingStates.is_retrieving;
+                        go_player.GetComponent<DistanceJoint2D>().enabled = false;
                     }
                     break;
 
                 case GrapplingStates.is_retrieving:
                     will_be_hooked = false;
-                     updateGrapplingPositions();
+                    updateGrapplingPositions();
 
                     throwing_avancement-=Time.deltaTime*throwing_speed;
                     throwing_avancement = Mathf.Max(throwing_avancement,0);
@@ -156,7 +167,7 @@ public class ShootingGrappling : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(rb2D.position,GetDirection(),length+2,layerMask);
 
         if (hit.collider != null){
-             UnityEngine.Debug.Log("position du hit :"+ hit.point);
+            UnityEngine.Debug.Log("position du hit :"+ hit.point);
             will_be_hooked = true;
             endPosition = hit.point;
         }

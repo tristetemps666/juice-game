@@ -243,10 +243,10 @@ public class Movements : MonoBehaviour
     public bool is_in_water(Vector3 position){
         int layer_water = 11; // CAN Change, check in unity Water layer
         Collider2D[] colliders = Physics2D.OverlapCircleAll(position,0f);
-        Debug.Log(colliders.Length);
+        // Debug.Log(colliders.Length);
         if(colliders.Length >0){
             foreach(Collider2D collider2D in colliders){
-                Debug.Log(collider2D.tag + "\n");
+                // Debug.Log(collider2D.tag + "\n");
                 if(collider2D.tag == "Water") return true;
             }
         }
@@ -268,7 +268,7 @@ public class Movements : MonoBehaviour
             factor = Mathf.Clamp(factor,0f,3f);
             rb2D.gravityScale = water_gravity*(factor*factor);
             // rb2D.AddForce(factor*factor*10*Vector2.up,ForceMode2D.Force);
-            Debug.Log("water_height_point_enter : "  + water_height_point_enter + "factor : "  + factor + "\n\n" + "enter water :  " + enter_water + "\n\n");
+            // Debug.Log("water_height_point_enter : "  + water_height_point_enter + "factor : "  + factor + "\n\n" + "enter water :  " + enter_water + "\n\n");
         }else{
             enter_water = false;
             set_gravity_along_jump(); // reset as in normal
