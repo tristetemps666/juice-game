@@ -113,7 +113,7 @@ public class ShootingGrappling : MonoBehaviour
                 
                 case GrapplingStates.is_hooked:
                     updateGrapplingPositions();
-                    if(Input.GetMouseButtonDown(1)){
+                    if(Input.GetMouseButtonUp(1) || !Input.GetMouseButton(1)){
                         grapplingStates = GrapplingStates.is_retrieving;
                         go_player.GetComponent<DistanceJoint2D>().enabled = false;
                     }
