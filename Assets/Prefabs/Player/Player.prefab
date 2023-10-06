@@ -423,7 +423,7 @@ PrefabInstance:
       objectReference: {fileID: 7178785638926951200}
     - target: {fileID: -1577717623283484415, guid: 6bc175c7cdeafa14aa70fa092ded236f, type: 3}
       propertyPath: speed_loading_shoot
-      value: 1.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -1577717623283484415, guid: 6bc175c7cdeafa14aa70fa092ded236f, type: 3}
       propertyPath: UI_shoot_power_script

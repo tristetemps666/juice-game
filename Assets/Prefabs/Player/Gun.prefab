@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5777628316745810323}
   - component: {fileID: -1577717623283484415}
   - component: {fileID: 5750559175413965730}
+  - component: {fileID: -6290247251863383468}
   m_Layer: 9
   m_Name: Gun
   m_TagString: Untagged
@@ -164,3 +165,27 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   meshtimetodie: 0.2
   count: 15
+--- !u!114 &-6290247251863383468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3079964802129010606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f631585be357c14bbaec59f9cdc2775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  fire_rate: 0
+  dammage: 0
+  bullet: {fileID: 0}
+  shooting_vfx_script: {fileID: 0}
+  muzzle_smoke: {fileID: 0}
+  reload_delay: 0
+  Canvas_UI: {fileID: 0}
+  lineRenderer: {fileID: 0}
+  UI_shoot_power_script: {fileID: 0}
+  text: {fileID: 0}
+  grapplingStates: 0

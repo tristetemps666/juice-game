@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using Unity.Mathematics;
+using UnityEngine.UIElements;
 
 
 public class SlowMotionHandler{
-    public float slow_mo_time_scale = 0.2f;
+    public float slow_mo_time_scale = 0.05f;
 
     public float normal_time_scale = 5f;
     public float actual_time_scale = 1f;
@@ -18,7 +19,7 @@ public class SlowMotionHandler{
     public float speed_slow_mo = 10f;
 
     public float stamina_slow_motion;
-    public float max_duration_slow_motion = 3f;
+    public float max_duration_slow_motion = 5f;
 
     public float speed_to_recover_stamina = 0.5f;
 
@@ -128,8 +129,8 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = slow_motion.actual_time_scale;
 
-        Debug.Log(" // peut utiliser slowmo ? : " + slow_motion.can_use_slow_motion + " // est en slow mo ? : " + slow_motion.is_in_slow_motion + " // time scale : " + slow_motion.actual_time_scale + " // stamina : " +  slow_motion.stamina_slow_motion);
-        if(Input.GetMouseButtonDown(1)){
+        // Debug.Log(" // peut utiliser slowmo ? : " + slow_motion.can_use_slow_motion + " // est en slow mo ? : " + slow_motion.is_in_slow_motion + " // time scale : " + slow_motion.actual_time_scale + " // stamina : " +  slow_motion.stamina_slow_motion);
+        if(Input.GetKeyDown(KeyCode.LeftAlt)){
             slow_motion.is_in_slow_motion = (!slow_motion.is_in_slow_motion) && slow_motion.can_use_slow_motion;
         }
         
