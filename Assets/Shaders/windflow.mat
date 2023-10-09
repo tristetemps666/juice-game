@@ -36,7 +36,9 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _is_dithered: 0
     - _speed: 0.5
+    - _step_amount: 8
     - _threshold: 0.5
     m_Colors: []
   m_BuildTextureStacks: []
