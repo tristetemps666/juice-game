@@ -18,15 +18,17 @@ public enum GrapplingStates {
 public class ShootingGrappling : MonoBehaviour
 {
     public Camera cam;
-    private GameObject go_player;
-    public float fire_rate;
+    public float length = 10;
+    public float throwing_speed = 10f;
 
-    public float length = 50;
+    public Color rope_color;
 
     private bool is_shoot_not_delayed;
+    private GameObject go_player;
 
     private bool can_fire;
 
+    private LineRenderer lineRenderer;
         
     private Vector2 mouse_screen_pos;
     private Vector2 mouse_world_pos;
@@ -35,14 +37,9 @@ public class ShootingGrappling : MonoBehaviour
 
     private Vector3 local_origin_pos;
 
-
-    public Shooting_VFX shooting_vfx_script;
-
-    public float reload_delay;
     private bool is_reloading = false;
 
 
-    public LineRenderer lineRenderer;
 
 
     private bool is_thrown = false;
@@ -50,17 +47,13 @@ public class ShootingGrappling : MonoBehaviour
     private bool will_be_hooked = false;
 
 
-    public float throwing_avancement = 0f;
-    public float throwing_speed = 2f;
+    private float throwing_avancement = 0f;
 
-    public Vector2 endPosition = Vector2.zero;
+
+    private Vector2 endPosition = Vector2.zero;
 
     
-    
-    //public TextMeshPro text;
-    public TextMeshProUGUI text;
-
-    public GrapplingStates grapplingStates;
+    private GrapplingStates grapplingStates;
     // Start is called before the first frame update
 
     void Start()
@@ -70,6 +63,9 @@ public class ShootingGrappling : MonoBehaviour
         is_shoot_not_delayed = true;
         rb2D = gameObject.GetComponentInParent<Rigidbody2D>();
         go_player = gameObject.GetComponentInParent<Movements>().gameObject;
+
+        SetupLineRenderer();
+
     }
 
     // Update is called once per frame
@@ -82,9 +78,9 @@ public class ShootingGrappling : MonoBehaviour
 
             switch(grapplingStates){
                 case GrapplingStates.can_shoot:
-                if(lineRenderer.enabled){
-                    lineRenderer.enabled = false;
-                }
+                    if(lineRenderer.enabled){
+                        lineRenderer.enabled = false;
+                    }
 
                     if (Input.GetMouseButtonDown(1)){
                         startThrowGrappling();
@@ -143,6 +139,23 @@ public class ShootingGrappling : MonoBehaviour
 
 
     // Get the normalized direction between the player and the mouse (world space)
+
+    public void SetupLineRenderer(){
+        lineRenderer = GetComponent<LineRenderer>();
+        if(lineRenderer == null){
+            gameObject.AddComponent<LineRenderer>();
+            lineRenderer = GetComponent<LineRenderer>();
+
+            lineRenderer.positionCount = 2;
+            lineRenderer.startColor =rope_color;
+            lineRenderer.endColor =rope_color;
+            lineRenderer.widthMultiplier = 0.1f;
+
+            lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        }else{ UnityEngine.Debug.Log("merdouille line renderer");}
+    }
+
+
     public Vector2 GetDirection(){
         mouse_screen_pos = Input.mousePosition; // screen space
         mouse_world_pos = cam.ScreenToWorldPoint(new Vector3(mouse_screen_pos.x,mouse_screen_pos.y,0.0f));
@@ -171,8 +184,6 @@ public class ShootingGrappling : MonoBehaviour
             will_be_hooked = true;
             endPosition = hit.point;
         }
-
-        // StartCoroutine(ShootingDelay());
     }
 
     void updateGrapplingPositions(){
@@ -181,9 +192,4 @@ public class ShootingGrappling : MonoBehaviour
 
     }
 
-    IEnumerator ShootingDelay(){
-        yield return new WaitForSeconds(1/fire_rate);
-        is_shoot_not_delayed = true;
-        shooting_vfx_script.end_vfx();
-    }
 }

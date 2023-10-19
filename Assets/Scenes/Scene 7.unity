@@ -130,6 +130,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 349787536497660630, guid: 249f4c8b3f7ec8e44b4232b56081eda6, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 516558074}
+    - target: {fileID: 349787536497660630, guid: 249f4c8b3f7ec8e44b4232b56081eda6, type: 3}
+      propertyPath: rope_color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 349787536497660630, guid: 249f4c8b3f7ec8e44b4232b56081eda6, type: 3}
+      propertyPath: rope_color.b
+      value: 0.7490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 349787536497660630, guid: 249f4c8b3f7ec8e44b4232b56081eda6, type: 3}
+      propertyPath: rope_color.g
+      value: 0.52156866
+      objectReference: {fileID: 0}
+    - target: {fileID: 349787536497660630, guid: 249f4c8b3f7ec8e44b4232b56081eda6, type: 3}
+      propertyPath: rope_color.r
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 349787536497660630, guid: 249f4c8b3f7ec8e44b4232b56081eda6, type: 3}
+      propertyPath: throwing_speed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5076945139446020483, guid: 249f4c8b3f7ec8e44b4232b56081eda6, type: 3}
       propertyPath: cam
       value: 

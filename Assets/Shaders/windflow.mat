@@ -38,7 +38,7 @@ Material:
     - _QueueOffset: 0
     - _is_dithered: 0
     - _speed: 0.5
-    - _step_amount: 8
+    - _step_amount: 10
     - _threshold: 0.5
     m_Colors: []
   m_BuildTextureStacks: []

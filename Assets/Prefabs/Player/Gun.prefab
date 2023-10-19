@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d416517db7fe5fd45bc65589cb387f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boost_vers_le_bas: 0
   cam: {fileID: 0}
   fire_rate: 1.7
   dammage: 0
@@ -178,14 +179,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
-  fire_rate: 0
-  dammage: 0
-  bullet: {fileID: 0}
-  shooting_vfx_script: {fileID: 0}
-  muzzle_smoke: {fileID: 0}
-  reload_delay: 0
-  Canvas_UI: {fileID: 0}
-  lineRenderer: {fileID: 0}
-  UI_shoot_power_script: {fileID: 0}
-  text: {fileID: 0}
-  grapplingStates: 0
+  length: 10
+  throwing_speed: 10
+  rope_color: {r: 0.78431374, g: 0.52156866, b: 0.7490196, a: 1}
