@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEditor.Tilemaps;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -20,12 +21,16 @@ public class Tourelle : MonoBehaviour
     public float rotate_speed = 20f;
     public float rotation_max  = 80f;
 
+    public GameObject bullet;
+
     private TourelleState tourelle_state = TourelleState.waiting;
 
     public float rotation_amount = 0f;
     private int rotation_sign = 1;
 
     private Transform circle_transform;
+
+    private Transform player_transform;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +38,7 @@ public class Tourelle : MonoBehaviour
         var transforms = GetComponentsInChildren<Transform>();
         foreach(Transform transform in transforms){
             if(transform.gameObject.name == "Circle") circle_transform = transform;
+            if(transform.gameObject.name == "bullet") bullet = transform.gameObject;
         }
 
     }
@@ -47,7 +53,9 @@ public class Tourelle : MonoBehaviour
 
                 break;
 
-            case TourelleState.aiming: 
+            case TourelleState.aiming:
+                // circle_transform.LookAt(player_transform);
+                look_at_player();
 
                 break;
         }
@@ -77,6 +85,8 @@ public class Tourelle : MonoBehaviour
             Debug.Log("J AI CAPTE LE JOUEUR");
             tourelle_state = TourelleState.aiming;
 
+            player_transform = other.transform;
+
             InvokeRepeating("shoot",fire_rate,fire_rate);
 
         }
@@ -95,5 +105,31 @@ public class Tourelle : MonoBehaviour
 
     private void shoot(){
         Debug.Log("PAN !!");
+        var go_bullet = Instantiate<GameObject>(bullet);
+        go_bullet.SetActive(true);
+
+        go_bullet.transform.rotation = circle_transform.transform.rotation;
+        go_bullet.transform.position =  circle_transform.transform.position -2f*circle_transform.transform.up;
+
+        if(go_bullet.TryGetComponent<Rigidbody2D>(out Rigidbody2D rb)){
+            rb.AddForce(-circle_transform.transform.up*bullet_speed);
+        }
+    }
+
+    private void look_at_player(){
+        Vector3 diff = player_transform.position-circle_transform.position;
+
+        Vector2 forward_to_player = new Vector2(diff.x,diff.y);
+        forward_to_player.Normalize();
+
+
+        Vector2 circle_up_world_vec2 = new Vector2 (circle_transform.up.x, circle_transform.up.y);
+
+        Debug.DrawRay(circle_transform.position, circle_transform.up);
+
+        float angle = Vector2.SignedAngle(forward_to_player,-circle_up_world_vec2);
+
+        circle_transform.Rotate(-angle*Vector3.forward);
+
     }
 }
