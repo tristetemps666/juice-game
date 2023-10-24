@@ -18,8 +18,10 @@ public class Tourelle : MonoBehaviour
 
     public float predictiveness = 1f;
 
-    public float rotate_speed = 20f;
+    public float wait_rotate_speed = 20f;
     public float rotation_max  = 80f;
+
+    public float look_speed = 3f;
 
     public GameObject bullet;
 
@@ -31,6 +33,9 @@ public class Tourelle : MonoBehaviour
     private Transform circle_transform;
 
     private Transform player_transform;
+
+    private float look_factor = 0f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +60,7 @@ public class Tourelle : MonoBehaviour
 
             case TourelleState.aiming:
                 // circle_transform.LookAt(player_transform);
+                look_factor = Mathf.Min(look_factor+Time.deltaTime*look_speed,1f);
                 look_at_player();
 
                 break;
@@ -76,7 +82,7 @@ public class Tourelle : MonoBehaviour
         if(angle_value <= -rotation_max && rotation_sign == -1){
             rotation_sign = 1;
         }
-        rotation_amount = rotate_speed*Time.deltaTime*rotation_sign;
+        rotation_amount = wait_rotate_speed*Time.deltaTime*rotation_sign;
 
     }
 
@@ -97,6 +103,7 @@ public class Tourelle : MonoBehaviour
         if(other.tag == enemy_tag &&  tourelle_state == TourelleState.aiming){
             Debug.Log("ORVOIR LE JOUEUR");
             tourelle_state = TourelleState.waiting;
+            look_factor = 0f;
 
             CancelInvoke("shoot");
 
@@ -129,7 +136,7 @@ public class Tourelle : MonoBehaviour
 
         float angle = Vector2.SignedAngle(forward_to_player,-circle_up_world_vec2);
 
-        circle_transform.Rotate(-angle*Vector3.forward);
+        circle_transform.Rotate(-angle*Vector3.forward*look_factor);
 
     }
 }
