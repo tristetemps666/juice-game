@@ -94,6 +94,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2991504016891592323}
   - component: {fileID: 3670711216748842367}
+  - component: {fileID: 933761358}
+  - component: {fileID: 933761359}
   m_Layer: 9
   m_Name: Tourelle
   m_TagString: Untagged
@@ -131,13 +133,64 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy_tag: Player
-  bullet_speed: 300
+  bullet_speed: 60
   fire_rate: 1
   predictiveness: 1
-  rotate_speed: 20
+  wait_rotate_speed: 20
   rotation_max: 80
+  look_speed: 3
   bullet: {fileID: 9075804945256032560}
   rotation_amount: 0
+  rotation_sign: 1
+--- !u!58 &933761358
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2991504016891592380}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 24.625902
+--- !u!60 &933761359
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2991504016891592380}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: -1.25}
+      - {x: -24.502039, y: -3.4894216}
+      - {x: -18.844322, y: -15.832551}
+      - {x: -10.222962, y: -22.502682}
+      - {x: 3.8544092, y: -24.318922}
+      - {x: 14.549302, y: -20.03315}
+      - {x: 20.425415, y: -13.760728}
+      - {x: 24.441656, y: -3.3415465}
 --- !u!1 &2991504017279246401
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +217,7 @@ Transform:
   m_GameObject: {fileID: 2991504017279246401}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.125, z: 0}
-  m_LocalScale: {x: 0.125, y: 1.5, z: 0.5}
+  m_LocalScale: {x: 0.2078125, y: 1.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2991504017647776736}
@@ -334,8 +387,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2991504017823988584}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.846, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.5}
+  m_LocalPosition: {x: 0, y: -0.8238, z: 0}
+  m_LocalScale: {x: 0.29025003, y: 0.24448, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2991504017647776736}
@@ -420,8 +473,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9075804945256032560}
   m_LocalRotation: {x: -0, y: -0, z: -0.70710635, w: 0.7071073}
-  m_LocalPosition: {x: 0, y: -0.8500004, z: 0}
-  m_LocalScale: {x: 0.146445, y: 0.146445, z: 0.146445}
+  m_LocalPosition: {x: 0, y: -0.834, z: 0}
+  m_LocalScale: {x: 0.22026625, y: 0.22026625, z: 0.22026625}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2991504017647776736}
@@ -506,8 +559,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 0.15242152
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0

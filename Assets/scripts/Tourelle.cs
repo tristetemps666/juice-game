@@ -28,13 +28,16 @@ public class Tourelle : MonoBehaviour
     private TourelleState tourelle_state = TourelleState.waiting;
 
     public float rotation_amount = 0f;
-    private int rotation_sign = 1;
+    public int rotation_sign = 1;
 
     private Transform circle_transform;
 
     private Transform player_transform;
 
     private float look_factor = 0f;
+
+    private float initial_rotation;
+    private float angle_value = 0f;
     
     // Start is called before the first frame update
     void Start()
@@ -45,6 +48,9 @@ public class Tourelle : MonoBehaviour
             if(transform.gameObject.name == "Circle") circle_transform = transform;
             if(transform.gameObject.name == "bullet") bullet = transform.gameObject;
         }
+
+        initial_rotation = circle_transform.rotation.eulerAngles.z;
+        
 
     }
 
@@ -70,11 +76,14 @@ public class Tourelle : MonoBehaviour
 
 
     void update_waiting_rotation(){
-        float angle_value = circle_transform.rotation.eulerAngles.z > 180 ? 
-            circle_transform.rotation.eulerAngles.z-360f 
-            : circle_transform.rotation.eulerAngles.z ;
 
-        circle_transform.Rotate(Vector3.forward*rotation_amount);
+
+        Debug.Log(gameObject.name + " : " + angle_value);
+
+        // circle_transform.Rotate(Vector3.forward*rotation_amount);
+        circle_transform.rotation = Quaternion.Euler(Vector3.forward*(angle_value+initial_rotation));
+
+        angle_value += wait_rotate_speed*Time.deltaTime*rotation_sign;
 
         if(angle_value >= rotation_max && rotation_sign == 1){
             rotation_sign = -1;
@@ -82,8 +91,6 @@ public class Tourelle : MonoBehaviour
         if(angle_value <= -rotation_max && rotation_sign == -1){
             rotation_sign = 1;
         }
-        rotation_amount = wait_rotate_speed*Time.deltaTime*rotation_sign;
-
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -103,9 +110,13 @@ public class Tourelle : MonoBehaviour
         if(other.tag == enemy_tag &&  tourelle_state == TourelleState.aiming){
             Debug.Log("ORVOIR LE JOUEUR");
             tourelle_state = TourelleState.waiting;
-            look_factor = 0f;
 
             CancelInvoke("shoot");
+
+            float exit_canon_angle = circle_transform.rotation.eulerAngles.z;
+            angle_value = exit_canon_angle-initial_rotation;
+            if(angle_value > 180) angle_value = angle_value-360;
+            look_factor = 0f;            
 
         }
     }
